@@ -194,8 +194,15 @@ var GradleBuilder = function () {
         await buildModuleApkWithMd5Rename(moduleName, null, targetDir, skipClean)
     }
 
+        async function buildSelectorModule (targetDir, skipClean) {
+            getLogger().info("buildSelectorModule")
+            const moduleName = "selector"
+            await buildModuleApkWithMd5Rename(moduleName, null, targetDir, skipClean)
+        }
+
     this.buildModuleApkWithMd5Rename = buildModuleApkWithMd5Rename
     this.buildAppModule = buildAppModule;
+    this.buildSelectorModule = buildSelectorModule;
 }
 
 
@@ -212,6 +219,7 @@ async function main () {
 
     const skipClean = param && param.indexOf("noclean") >= 0
     let buildApp = param && param.indexOf("app") >= 0
+    let buildSelector = param && param.indexOf("selector") >= 0
 
     if (!param){
         getLogger().info("no param, build device as default")
@@ -221,6 +229,9 @@ async function main () {
     const gradleBuilder = new GradleBuilder();
     if (buildApp){
         await gradleBuilder.buildAppModule(targetDir, skipClean);
+    }
+    if (buildSelector){
+        await gradleBuilder.buildSelectorModule(targetDir, skipClean);
     }
 
     getLogger().info("main end")
